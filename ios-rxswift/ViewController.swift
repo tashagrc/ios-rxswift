@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         // disposeExample()
         
         // kalo ga pake ini, disposable view akan run forever
-        // cara 2 utk dispose
+        // cara 2 utk dispose, cek disposableView buat cara 1 dan 2
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             self?.disposableView = nil
         }

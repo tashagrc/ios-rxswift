@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A355B1D22EF99E9100D9E131 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = A355B1D12EF99E9100D9E131 /* RxCocoa */; };
 		A355B1D42EF99E9100D9E131 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A355B1D32EF99E9100D9E131 /* RxSwift */; };
+		A355B1D82EFA6A1A00D9E131 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A355B1D72EFA6A1500D9E131 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		A355B19C2EF99DF900D9E131 /* ios-rxswift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-rxswift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A355B1B22EF99DFB00D9E131 /* ios-rxswiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-rxswiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A355B1BC2EF99DFB00D9E131 /* ios-rxswiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-rxswiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A355B1D72EFA6A1500D9E131 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -99,6 +101,7 @@
 				A355B1B52EF99DFB00D9E131 /* ios-rxswiftTests */,
 				A355B1BF2EF99DFB00D9E131 /* ios-rxswiftUITests */,
 				A355B19D2EF99DF900D9E131 /* Products */,
+				A355B1D72EFA6A1500D9E131 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -237,6 +240,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A355B1D82EFA6A1A00D9E131 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
