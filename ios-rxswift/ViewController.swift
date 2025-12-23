@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     let disposeBag = DisposeBag()
     // var disposableView: DisposableView? = DisposableView()
     
+    let fileReader = FileReader()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // observableExample()
