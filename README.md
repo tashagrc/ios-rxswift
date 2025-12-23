@@ -182,3 +182,20 @@ Observable.deferred {
     return Observable.just(Date())
 }
 ```
+
+## Traits
+traits itu kayak observable tapi lebih spesifik aja
+traits lebih readable dan susah misuse dibanding observable karena lebih spesifik
+traits cuma terima value sekali trs udah done.
+- Single -> akan mengeluarkan success(value) atau error(error) event. success(value) isinya kombinasi next dan completed (sekali aja barengan dikeluarinnya).
+- Completable -> cuma akan ngeluarin completed atau error(error) event, ga akan keluarin value apapun. Bisa dipakai kalo kita ga peduli dia keluarin value apa.
+- Maybe -> campuran antara Single dan Completable, bisa keluarin success(value), completable, atau error(error). Tapi bedanya sama Observable, maybe cuma bisa keluarin 1 value lalu selesai, ga repeated.
+
+## Rule of thumb: Observable and Traits
+
+- Repeated events (kayak button taps, text field changes, web socket, notif, location update) -> Observable
+- API call (cuma 1 response dan request, trs selesai)-> Single
+- Save/ delete, logout, clear cache (ga peduli dengan datanya, cuma peduli itu sukses atau fail) -> Completable
+- Optional fetch (bisa jadi ada value atau nothing, atau error misal cache lookup atau database query) -> Maybe
+
+
