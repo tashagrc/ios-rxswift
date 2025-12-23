@@ -9,10 +9,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum MyError: Error {
+    case anError
+}
+
 class ViewController: UIViewController {
 
     let disposeBag = DisposeBag()
-    var disposableView: DisposableView? = DisposableView()
+    // var disposableView: DisposableView? = DisposableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,9 +25,11 @@ class ViewController: UIViewController {
         
         // kalo ga pake ini, disposable view akan run forever
         // cara 2 utk dispose, cek disposableView buat cara 1 dan 2
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-            self?.disposableView = nil
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+//            self?.disposableView = nil
+//        }
+        
+        // createExample()
     }
     
     private func observableExample() {
@@ -90,6 +96,24 @@ class ViewController: UIViewController {
         })
         
         subscription.dispose()
+    }
+    
+    private func createExample() {
+        // create -> build custom observable from scratch
+        // kita bisa decide kapan value dikeluarkan, apa yg diemit, kapan stream completed/error
+        
+        let observable = Observable<String>.create { observer in
+            observer.onNext("heloowwww")
+             observer.onError(MyError.anError)
+             observer.onCompleted()
+            // ini ga akan kepanggil setelah completed
+            observer.onNext("miawww")
+            return Disposables.create() // return disposable
+        }
+        observable.subscribe({ events in
+            print("create: \(events)")
+        })
+         .disposed(by: disposeBag)
     }
 }
 

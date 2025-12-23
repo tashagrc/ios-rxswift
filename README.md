@@ -108,3 +108,40 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
     self?.disposableView = nil
 }
 ```
+
+### Create, primitive control of observable
+
+```swift
+let observable = Observable<String>.create { observer in
+    observer.onNext("heloowwww")
+    observer.onCompleted()
+    // ini ga akan kepanggil setelah completed
+    observer.onNext("miawww")
+    return Disposables.create() // return disposable
+}
+observable.subscribe({ events in
+    print("create: \(events)")
+}).disposed(by: disposeBag)
+```
+
+outputnya ini:
+```swift
+create: next(heloowwww)
+create: completed
+```
+
+kalau ga dicomplete atau error atau dispose, maka akan leak memory
+```swift
+let observable = Observable<String>.create { observer in
+    observer.onNext("heloowwww")
+    // observer.onError(MyError.anError)
+   //  observer.onCompleted()
+    // ini ga akan kepanggil setelah completed
+    observer.onNext("miawww")
+    return Disposables.create() // return disposable
+}
+observable.subscribe({ events in
+    print("create: \(events)")
+})
+// .disposed(by: disposeBag)
+```
