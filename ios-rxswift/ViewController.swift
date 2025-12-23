@@ -30,6 +30,8 @@ class ViewController: UIViewController {
 //        }
         
         // createExample()
+        
+        observableFactoryExample()
     }
     
     private func observableExample() {
@@ -115,5 +117,31 @@ class ViewController: UIViewController {
         })
          .disposed(by: disposeBag)
     }
+    
+    private func observableFactoryExample() {
+        // ini bakal kasih observable ke setiap subscriber
+        // observable makers, not observable
+        
+        // kalo kita pake observable instance yang sama
+        // bisa2 shared state, side effect cuma ketrigger sekali, ada bug etc
+        
+        var flip = false
+        let factory: Observable<Int> = Observable.deferred {
+            // ini buat nunjukin kalo observablenya created everytime
+            flip.toggle()
+            
+            if flip {
+                return Observable.of(1, 2, 3)
+            } else {
+                return Observable.of(4, 5, 6)
+            }
+        }
+        
+        for _ in 0...3 {
+            factory.subscribe(onNext: {
+                print($0, terminator: "")
+            }).disposed(by: disposeBag)
+            print()
+        }
+    }
 }
-

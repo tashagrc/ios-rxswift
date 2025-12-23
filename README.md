@@ -1,5 +1,31 @@
 # Rx Swift
 
+## Introduction
+**Observable**: ini bikin consumer bisa subscribe ke events, value etc dari objek lain
+
+Observable bisa ngeluarin 3 events ini, observers bisa terima 3 events ini
+
+- next: latest data value
+- completed: terminate event sequence, wont emit additional events
+- error: terminate with error and wont emit additional events
+
+ada 2 jenis observable sequences:
+
+- finite: suatu saat eventsnya akan terminate, misal download file
+- infinite: ga akan pernah selesai, cth device orientation change. jadi skip onError dan onCompleted
+
+**Operators**
+
+ini kayak bisa ngefilter data, etc
+
+**Schedulers**
+
+ini buat process jadi bisa run di main vs background etc, tanpa scheduler kita run in main semua
+
+regular scheduler (dispatch queue): jalanin code ini di thread ini
+
+rxswift: dari point ini, value dideliver di sheduler yang itu
+
 ## Observable
 
 ### The basic
@@ -144,4 +170,15 @@ observable.subscribe({ events in
     print("create: \(events)")
 })
 // .disposed(by: disposeBag)
+```
+
+### Observable factory
+Function yang memproduksi fresh observable instance on demand
+Calling the factory itu bukan subscribing, setiap call create new observable
+
+deferred -> code di dalam deferred ini run saat subscription time, bukan saat creation time, sehingga per subscriber dapat fresh state
+```swift
+Observable.deferred {
+    return Observable.just(Date())
+}
 ```
