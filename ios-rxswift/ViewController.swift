@@ -12,10 +12,21 @@ import RxCocoa
 class ViewController: UIViewController {
 
     let disposeBag = DisposeBag()
+    var disposableView: DisposableView? = DisposableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // observableExample()
+        // disposeExample()
         
+        // kalo ga pake ini, disposable view akan run forever
+        // cara 2 utk dispose
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            self?.disposableView = nil
+        }
+    }
+    
+    private func observableExample() {
         let one = 1
         let two = 2
         let three = 3
@@ -72,6 +83,13 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
     }
 
-
+    private func disposeExample() {
+        let observable = Observable.of("a", "b", "c")
+        let subscription = observable.subscribe({ event in
+            print("observable 1: \(event)")
+        })
+        
+        subscription.dispose()
+    }
 }
 
