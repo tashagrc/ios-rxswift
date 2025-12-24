@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     let disposeBag = DisposeBag()
     // var disposableView: DisposableView? = DisposableView()
     
-    let fileReader = FileReader()
+    // let fileReader = FileReader()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,8 @@ class ViewController: UIViewController {
         
         // createExample()
         
-        observableFactoryExample()
+        // observableFactoryExample()
+        sideEffectExample()
     }
     
     private func observableExample() {
@@ -145,5 +146,26 @@ class ViewController: UIViewController {
             }).disposed(by: disposeBag)
             print()
         }
+    }
+    
+    private func sideEffectExample() {
+       //  let observable = Observable<Void>.never()
+        let observable = Observable<Int>.of(1, 2, 3, 4, 5, 6)
+        
+        observable.do(onNext: { vals in
+            print("do onNext \(vals)")
+        }, onError: { vals in
+            print("do onError")
+        }, onCompleted: {
+            print("do onCompleted")
+        }, onSubscribe: {
+            print("do onSubscribe") // only this get printed if use never
+        }, onDispose: {
+            print("do onDispose")
+        }).subscribe(onNext: { vals in
+            print("subscribe onNext \(vals)")
+        }, onCompleted: {
+            print("subscribe onCompleted")
+        }).disposed(by: disposeBag)
     }
 }

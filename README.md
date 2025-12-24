@@ -183,7 +183,7 @@ Observable.deferred {
 }
 ```
 
-## Traits
+### Traits
 traits itu kayak observable tapi lebih spesifik aja
 traits lebih readable dan susah misuse dibanding observable karena lebih spesifik
 traits cuma terima value sekali trs udah done.
@@ -191,11 +191,47 @@ traits cuma terima value sekali trs udah done.
 - Completable -> cuma akan ngeluarin completed atau error(error) event, ga akan keluarin value apapun. Bisa dipakai kalo kita ga peduli dia keluarin value apa.
 - Maybe -> campuran antara Single dan Completable, bisa keluarin success(value), completable, atau error(error). Tapi bedanya sama Observable, maybe cuma bisa keluarin 1 value lalu selesai, ga repeated.
 
-## Rule of thumb: Observable and Traits
+### Rule of thumb: Observable and Traits
 
 - Repeated events (kayak button taps, text field changes, web socket, notif, location update) -> Observable
 - API call (cuma 1 response dan request, trs selesai)-> Single
 - Save/ delete, logout, clear cache (ga peduli dengan datanya, cuma peduli itu sukses atau fail) -> Completable
 - Optional fetch (bisa jadi ada value atau nothing, atau error misal cache lookup atau database query) -> Maybe
 
+### Subscribe vs Do
+
+do: inside the pipe
+- side effect while the stream is flowing, misalnya kayak logging, analytics, debug prints, loading indicators, metrics, loading
+- use if i want to keep the stream alive and reusable after this
+- only called when someone subscribe to the observable
+- mirrors lifecycle events but does not control them
+
+subscribe: when the pipe ends
+- consume the final result
+- need to consume the value, when data leave rx, such as update UI, navigate, trigger imperative code, call delegates
+       
+                        
+Lifecycle timeline:
+subscribe -> onSubscribe -> onNext -> onCompleted -> dispose -> onDispose
+                            
+                        
+```swift
+observable.do(onNext: { vals in
+    // dipanggil setiap kali observable emits value
+    // dipakai buat logging, analytics
+}, onError: { vals in
+    // dipanggil ketika observable terminate dgn error
+    // dipakainya ketika error logging, metrics
+}, onCompleted: {
+    // dipanggil ketika observable completes successfully
+    // terjadi cuma sekali
+    // biasanya buat cleanup dan logging completion
+}, onSubscribe: {
+    // dipanggil langsung setelah subscribe() dipanggil
+    // dipakainya buat start loading indicator
+}, onDispose: {
+    // dipanggil ketika subscription di-dispose
+    // terjadi ketika observable complete, error, subscription manually disposed, disposeBag deallocated
+})
+```
 
