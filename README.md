@@ -235,3 +235,23 @@ observable.do(onNext: { vals in
 })
 ```
 
+                        
+## Subjects
+Kalau observable kan read only, kalau Subject kita bisa add value ke observable itu saat runtime untuk emit ke subscriber.
+Subject bisa berlaku sebagai Observer dan Observable.
+
+Subject sebaiknya dihindari kalau bisa, karena break unidirectional data flow, susah ditrace, gampang di-misuse.
+Most of the time pakai Observable aja. 
+
+### Jenis2 subjects di RxSwift:
+- PublishSubject: mulainya empty, lalu akan emits element baru ke subscriber (subscriber ga akan terima events yang dikirim sebelum dia subscribe)
+- BehaviorSubject: mulainya dengan initial value. Lalu kirim initial value atau latest element ke new subscriber
+- ReplaySubject: dimulai dengan buffer size dan akan maintain buffer element sampai ukuran itu dan replay ke new subscribers
+- AsyncSubject: cuma emit event terakhir di sequence dan hanya ketika subject menerima completed events. Ini jarang dipakai.
+
+### Publish Subject
+Publish Subject berguna kalau kita cuma mau subscriber untuk dinotified sama new event yang datang ketika mereka subscribe sampai unsubscribe atau subjectnya terminated. 
+
+Suitable for time sensitive data such as online bidding system.
+Publish subject does not replay values to new subscribers
+-> karena hanya akan print events yang diterima setelah susbcribers subscribe ke events
