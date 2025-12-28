@@ -259,3 +259,7 @@ Publish subject does not replay values to new subscribers
 ### Behavior Subject
 Behavior Subject mirip kayak Publish Subject, tapi juga akan replay event terakhir ke subscriber baru. Beda sama Publish Subject yang bener2 ga akan tampilin event sebelum subscribernya subscribe, Behavior Subject ini at least akan kasih event terakhir.
 
+### Replay Subject
+Replay subject akan temporarily cache N latest element yang mereka keluarin. Lalu mereka akan replay cache itu ke subscriber baru. Jadi bedanya sama Behavior Subject, kalau Behavior Subject cuma 1 aja by default, tapi yang Replay Subject kita bisa specify mau berapa yang disimpan di cache. 
+Jangan define buffer banyak2 karena ini disimpan di memory. 
+ 

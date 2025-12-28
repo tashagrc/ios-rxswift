@@ -20,7 +20,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // publishSubjectExample()
-        behaviorSubjectExample()
+        // behaviorSubjectExample()
+        replaySubjectExample()
     }
     
     private func publishSubjectExample() {
@@ -84,5 +85,59 @@ class ViewController: UIViewController {
             print("subs 2: ", (event.element ?? event.error) ?? event)
         }
         .disposed(by: disposeBag)
+    }
+    
+    private func replaySubjectExample() {
+        let subject = ReplaySubject<String>.create(bufferSize: 2)
+        subject.onNext("do you even care?")
+        subject.onNext("please come back")
+        subject.onNext("i miss you")
+        
+        // both of these 2 subs only print the latest 2 events
+        /**
+         
+         subs 1:  please come back
+         subs 1:  i miss you
+         subs 2:  please come back
+         subs 2:  i miss you
+         
+         */
+        subject.subscribe { event in
+            print("subs 1: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
+        
+        subject.subscribe { event in
+            print("subs 2: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
+        
+        // end
+        
+        // after adding this
+        /**
+         subs 1:  hey, i didn't mean it
+         subs 2:  hey, i didn't mean it // both subscriber will print the latest element
+         subs 3:  i miss you
+         subs 3:  hey, i didn't mean it // 3rd subject will replay the last 2 events
+         */
+        subject.onNext("hey, i didn't mean it")
+        
+        // added later, after adding the error
+        /**
+         subs 1:  anError
+         subs 2:  anError
+         subs 3:  i miss you
+         subs 3:  hey, i didn't mean it
+         subs 3:  anError
+         */
+        subject.onError(MyError.anError) // even though we add error before subs 3 subscribe, we still get the prev 2 events
+        
+        // added later
+        subject.dispose() // after adding this, we cannot subscribe again
+        
+        subject.subscribe { event in
+            print("subs 3: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
+        
+         
     }
 }
