@@ -9,13 +9,18 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum MyError: Error {
+    case anError
+}
+
 class ViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        publishSubjectExample()
+        // publishSubjectExample()
+        behaviorSubjectExample()
     }
     
     private func publishSubjectExample() {
@@ -61,7 +66,23 @@ class ViewController: UIViewController {
         // ga akan keprint sama subs 3 karena subjectnya udah diterminate
         // tapi tetap akan print subs3: completed
         subject.onNext("this wont print: there's a bowl of honey over there")
+    }
+    
+    private func behaviorSubjectExample() {
+        let subject = BehaviorSubject(value: "Initial value")
         
+        subject.onNext("first value")
+        // walau baru subscribe setelah valuenya di-init, tetap bakal terima latest valuenya
+        subject.subscribe { event in
+            print("subs 1: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
         
+        // walau setelah subscribe, akan ada event error, latest event saat subscribe juga akan diprint yang "first value", karena immediatelly after subscribe, dia akan print latest event
+        subject.onError(MyError.anError)
+        
+        subject.subscribe { event in
+            print("subs 2: ", (event.element ?? event.error) ?? event)
+        }
+        .disposed(by: disposeBag)
     }
 }

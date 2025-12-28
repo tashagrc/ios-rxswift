@@ -255,3 +255,7 @@ Publish Subject berguna kalau kita cuma mau subscriber untuk dinotified sama new
 Suitable for time sensitive data such as online bidding system.
 Publish subject does not replay values to new subscribers
 -> karena hanya akan print events yang diterima setelah susbcribers subscribe ke events
+
+### Behavior Subject
+Behavior Subject mirip kayak Publish Subject, tapi juga akan replay event terakhir ke subscriber baru. Beda sama Publish Subject yang bener2 ga akan tampilin event sebelum subscribernya subscribe, Behavior Subject ini at least akan kasih event terakhir.
+
