@@ -21,7 +21,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // publishSubjectExample()
         // behaviorSubjectExample()
-        replaySubjectExample()
+        // replaySubjectExample()
+        // behaviorSubjectExample2()
+        // publishRelaySubjectExample()
+        behaviorRelaySubjectExample()
     }
     
     private func publishSubjectExample() {
@@ -87,6 +90,17 @@ class ViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
+    private func behaviorSubjectExample2() {
+        let subject = BehaviorSubject(value: "Initial value")
+        subject.onNext("blue straw red straw")
+        
+        subject.subscribe { event in
+            print("subs 1 simple: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
+        
+        subject.onNext("it's not a joke")
+    }
+    
     private func replaySubjectExample() {
         let subject = ReplaySubject<String>.create(bufferSize: 2)
         subject.onNext("do you even care?")
@@ -137,7 +151,36 @@ class ViewController: UIViewController {
         subject.subscribe { event in
             print("subs 3: ", (event.element ?? event.error) ?? event)
         }.disposed(by: disposeBag)
+    }
+    
+    private func publishRelaySubjectExample() {
+        // this is exacly like Publish Subject
+        let relay = PublishRelay<String>()
         
-         
+        relay.accept("knock knock")
+        
+        relay.subscribe(onNext: {
+            print($0)
+        })
+        .disposed(by: disposeBag)
+        
+        relay.accept("i put my jacket on") // only print latest element
+    }
+    
+    private func behaviorRelaySubjectExample() {
+        // will receive the latest element before subscribing + the elements after that
+        let relay = BehaviorRelay(value: "the world begin with a bowl of meat soup")
+        relay.accept("then a cute rabbit appears from thin air")
+        
+        relay.subscribe { event in
+            print("subs 1: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
+        
+        relay.accept("the rabbit started to eat a lot of meat soup")
+        relay.subscribe { event in
+            print("subs 2: ", (event.element ?? event.error) ?? event)
+        }.disposed(by: disposeBag)
+        
+        relay.accept("then a wild boar appears from the meat soup")
     }
 }

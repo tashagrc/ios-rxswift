@@ -249,6 +249,14 @@ Most of the time pakai Observable aja.
 - ReplaySubject: dimulai dengan buffer size dan akan maintain buffer element sampai ukuran itu dan replay ke new subscribers
 - AsyncSubject: cuma emit event terakhir di sequence dan hanya ketika subject menerima completed events. Ini jarang dipakai.
 
+Ada konsep lain namanya Relays: wrap respective subject, tapi cuma accept dan relay next events, gabisa add completed atau error events.
+Relay itu Subject, tapi gabisa finish dan gabisa fail
+- Publish Relay -> wrap PublishSubject
+- Behavior Relay -> wrap BehaviorSubject
+
+Secara internal, Relay itu Subject, tapi menyembunyikan API yang dangerous, gabisa call onError dan onCompleted. Hanya bisa accept. Ini menyelesaikan masalah terminate accidently. 
+
+
 ### Publish Subject
 Publish Subject berguna kalau kita cuma mau subscriber untuk dinotified sama new event yang datang ketika mereka subscribe sampai unsubscribe atau subjectnya terminated. 
 
