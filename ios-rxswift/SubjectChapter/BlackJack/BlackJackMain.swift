@@ -15,6 +15,13 @@ class BlackJackMain {
     init() {
         // Add subscription to dealtHand here
         // subscribe to dealtHand and handle next and error events. For next events, print a string containing the results returned from calling cardString(for:) and points(for:). For error events just print the error.
+        dealtHand.subscribe(onNext: { event in
+            print("\(cardString(for: event)) : \(points(for: event))")
+            // 🃙🃗 : 16
+        }, onError: { error in
+            print(String(describing: error))
+        }).disposed(by: disposeBag)
+        
         deal(3)
     }
     
@@ -33,6 +40,12 @@ class BlackJackMain {
         // Add code to update dealtHand here
         // evaluate the result returned from calling points(for:), passing the hand array
         // if the result is greater than 21, add the error HandError.busted onto dealtHand with the points that caused the hand to bust. Otherwise, add hand into dealtHand as a next event
+        
+        if points(for: hand) > 21 {
+            dealtHand.onError(HandError.busted)
+        } else {
+            dealtHand.onNext(hand)
+        }
       
     }
 }

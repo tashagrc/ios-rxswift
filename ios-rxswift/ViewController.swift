@@ -11,6 +11,8 @@ import RxCocoa
 
 class ViewController: UIViewController {
 
+    let bj = BlackJackMain()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
