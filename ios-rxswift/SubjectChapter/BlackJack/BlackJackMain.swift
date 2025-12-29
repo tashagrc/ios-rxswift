@@ -8,6 +8,7 @@
 import RxSwift
 import Foundation
 
+// let bj = BlackJackMain()
 class BlackJackMain {
     let disposeBag = DisposeBag()
     let dealtHand = PublishSubject<[(String, Int)]>()
