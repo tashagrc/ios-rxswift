@@ -19,12 +19,17 @@ class UserSessionMain {
     }
 
     let disposeBag = DisposeBag()
-
+    
     // Create userSession BehaviorRelay of type UserSession with initial value of .loggedOut
-
-    // Subscribe to receive next events from userSession
+    let userSession = BehaviorRelay<UserSession>(value: .loggedOut)
     
     init() {
+        userSession.subscribe(onNext: { val in
+            print(val)
+        }, onError: { err in
+            print(err)
+        }).disposed(by: disposeBag)
+        
         for i in 1...2 {
             let password = i % 2 == 0 ? "appleseed" : "password"
           
@@ -44,20 +49,27 @@ class UserSessionMain {
     }
     
     func logInWith(username: String, password: String, completion: (Error?) -> Void) {
-      guard username == "johnny@appleseed.com",
+        guard username == "johnny@appleseed.com",
             password == "appleseed" else {
-          completion(LoginError.invalidCredentials)
-          return
-      }
+            completion(LoginError.invalidCredentials)
+            return
+        }
       
-      // Update userSession
+        // Update userSession
+        userSession.accept(.loggedIn)
     }
 
     func logOut() {
         // Update userSession
+        userSession.accept(.loggedOut)
     }
 
     func performActionRequiringLoggedInUser(_ action: () -> Void) {
         // Ensure that userSession is loggedIn and then execute action()
+        guard userSession.value == .loggedIn else {
+            print("you cannot do that")
+            return
+        }
+        action()
     }
 }

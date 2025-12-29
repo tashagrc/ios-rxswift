@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class ViewController: UIViewController {
-    
+    let userSessionMain = UserSessionMain()
     override func viewDidLoad() {
         super.viewDidLoad()
         
